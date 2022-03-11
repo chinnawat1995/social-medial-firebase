@@ -5,6 +5,8 @@ import { NextRouter, useRouter } from 'next/router';
 import { addDoc, query, where, getDocs } from 'firebase/firestore';
 import { signUpWithEmail } from '@/lib/firebase/Auth';
 import { userCollection } from '@/lib/firebase/Firestore';
+import { useUpdateProfile } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase/Init';
 
 import AlertDanger from '@/components/AlertDanger';
 import FormInput from '@/components/input/FormInput';
@@ -17,6 +19,7 @@ import * as Yup from 'yup';
 const Register: NextPage = () => {
   const [error, setError] = useState<string>('');
   const router: NextRouter = useRouter();
+  const [updateProfile] = useUpdateProfile(auth);
 
   const validation = Yup.object().shape({
     email: Yup.string().required('You have to enter your email.').email('Email is invalid.'),
@@ -45,6 +48,8 @@ const Register: NextPage = () => {
       const querySnapshot = await getDocs(userQuery);
 
       if (querySnapshot.empty) {
+        await signUpWithEmail(data.email, data.password);
+
         await addDoc(userCollection, {
           firstName: data.firstName,
           lastName: data.lastName,
@@ -52,11 +57,11 @@ const Register: NextPage = () => {
           birthday: data.birthday,
         });
 
-        await signUpWithEmail(data.email, data.password);
+        await updateProfile({ displayName: `${data.firstName} ${data.lastName}` });
 
         router.push('/');
       } else {
-        setError('Email has already used.')
+        setError('Email has already used.');
       }
     } catch (error: any) {
       setError(error.message);

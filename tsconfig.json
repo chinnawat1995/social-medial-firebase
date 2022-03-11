@@ -23,7 +23,8 @@
       "@/public/*": ["public/*"],
       "@/config/*": ["config/*"],
       "@/redux/*": ["redux/*"],
-      "@/context/*": ["context/*"]
+      "@/context/*": ["context/*"],
+      "@/constant/*": ["constant/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

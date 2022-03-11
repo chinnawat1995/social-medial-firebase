@@ -5,13 +5,14 @@ import {
   UserCredential,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signOut,
 } from 'firebase/auth';
 
 export const signInWithEmail = async (email: string, password: string) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (error: any) {
-    throw new Error("Please check your email or password.");
+    throw new Error('Please check your email or password.');
   }
 };
 
@@ -36,6 +37,14 @@ export const signInWithGoogle = async () => {
     const result: UserCredential = await signInWithPopup(auth, provider);
     GoogleAuthProvider.credentialFromResult(result);
   } catch (error) {
-    console.log(error);
+    return error;
+  }
+};
+
+export const logOut = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    return error;
   }
 };

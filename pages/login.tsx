@@ -44,7 +44,7 @@ const Login: NextPage = () => {
 
   return (
     <>
-      <AlertDanger message={error} />;
+      <AlertDanger message={error} />
       <div className="w-[28rem] mx-auto border border-gray-100 rounded-lg">
         <div className="p-5">
           <form onSubmit={handleSubmit(handleSignInWithEmail)}>
@@ -70,7 +70,9 @@ const Login: NextPage = () => {
               />
             </div>
             <div className="mt-5 space-y-2">
-              <button className="p-3 bg-blue-800 text-white rounded-md w-full">Login</button>
+              <button className="p-3 bg-blue-800 hover:bg-blue-900 text-white rounded-md w-full">
+                Login
+              </button>
               <button
                 className="p-3 text-black rounded-md w-full hover:bg-blue-400 hover:text-white"
                 onClick={(e) => {

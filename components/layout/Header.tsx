@@ -1,4 +1,5 @@
 import { useAuthContext } from '@/context/AuthContext';
+import { logOut } from '@/lib/firebase/Auth';
 import { NextRouter, useRouter } from 'next/router';
 import { FC } from 'react';
 
@@ -12,7 +13,7 @@ const Header: FC<Props> = () => {
     let elementLogin = (
       <button
         onClick={() => router.push('login')}
-        className="px-3 py-2 bg-blue-800 rounded-full text-white text-sm">
+        className="px-3 py-2 bg-blue-800 hover:bg-blue-900 rounded-full text-white text-sm">
         Login
       </button>
     );
@@ -21,7 +22,7 @@ const Header: FC<Props> = () => {
       elementLogin = <></>;
     }
 
-    if (!authContext?.loading && authContext?.user) {
+    if (!authContext?.loading && authContext?.user?.displayName) {
       elementLogin = (
         <>
           <div className="flex justify-center items-center mr-2 bg-gray-100 px-2 py-1 rounded-xl">
@@ -32,6 +33,11 @@ const Header: FC<Props> = () => {
             />
             <span>{authContext?.user.displayName}</span>
           </div>
+          <button
+            onClick={() => logOut()}
+            className="px-3 py-2 bg-blue-800 hover:bg-blue-900 rounded-full text-white text-sm">
+            logout
+          </button>
         </>
       );
     }
@@ -41,7 +47,9 @@ const Header: FC<Props> = () => {
 
   return (
     <nav className="w-full border-b border-b-gray-200 h-12 flex justify-between">
-      <div className="flex justify-center items-center h-full w-auto ml-3">
+      <a
+        onClick={() => router.push('/')}
+        className="flex justify-center items-center h-full w-auto ml-3 hover:cursor-pointer">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-7 w-7 stroke-blue-800"
@@ -56,7 +64,7 @@ const Header: FC<Props> = () => {
           />
         </svg>
         <span className="ml-2 font-bold text-blue-800">Seamless</span>
-      </div>
+      </a>
       <div className="flex self-center mr-3">{displayLogin()}</div>
     </nav>
   );
