@@ -50,7 +50,7 @@ const Register: NextPage = () => {
       if (querySnapshot.empty) {
         await signUpWithEmail(data.email, data.password);
 
-        await addDoc(userCollection, {
+        addDoc(userCollection, {
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
